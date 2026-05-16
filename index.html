@@ -264,15 +264,18 @@ footer p{color:var(--muted);font-size:0.83rem}
 
 /* MUSIC PLAYER */
 #music-player{
-  position:fixed;bottom:26px;left:26px;z-index:98;
-  background:var(--bg3);border:1px solid var(--border2);
+  position:fixed;bottom:90px;right:26px;z-index:97;
+  background:rgba(11,15,28,0.96);
+  border:1px solid var(--border2);
   border-radius:20px;padding:14px 18px;
   display:flex;align-items:center;gap:14px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  box-shadow:0 8px 40px rgba(0,0,0,0.7),0 0 0 1px rgba(0,229,255,0.08);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
-  min-width:64px;overflow:hidden;
+  min-width:240px;overflow:visible;
 }
-#music-player.collapsed{min-width:0;padding:10px;border-radius:50%;width:48px;height:48px;justify-content:center}
+[data-theme="light"] #music-player{background:rgba(240,245,255,0.97)}
+#music-player.collapsed{min-width:0;padding:10px;border-radius:16px;width:52px;height:52px;justify-content:center}
 #music-player.collapsed .player-info,#music-player.collapsed .player-controls-wrap{display:none}
 .player-icon{font-size:1.2rem;flex-shrink:0;cursor:none;transition:transform 0.3s}
 .player-icon:hover{transform:scale(1.15)}
@@ -293,8 +296,13 @@ footer p{color:var(--muted);font-size:0.83rem}
 .p-btn:hover{color:var(--accent);transform:scale(1.15)}
 .p-play{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#000;font-size:0.9rem;border:none;cursor:none;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
 .p-play:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(0,229,255,0.4)}
-.player-toggle{position:absolute;top:-8px;right:-8px;width:18px;height:18px;border-radius:50%;background:var(--border2);border:none;color:var(--muted);font-size:0.6rem;cursor:none;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.player-toggle:hover{background:var(--accent);color:#000}
+.player-toggle{position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  width:22px;height:22px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border2);
+  color:var(--muted2);font-size:0.65rem;cursor:none;
+  display:flex;align-items:center;justify-content:center;transition:all 0.2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);}
+.player-toggle:hover{background:var(--accent);color:#000;border-color:var(--accent)}
 
 /* EASTER EGG */
 #easter-egg{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:24px}
@@ -354,7 +362,7 @@ footer p{color:var(--muted);font-size:0.83rem}
   .contact-wrap{padding:30px 20px}
   #chatbot-window{width:calc(100vw - 32px);right:16px}
   .badges-row{gap:10px}
-  #music-player{bottom:16px;left:16px}
+  #music-player{bottom:90px;right:16px;min-width:200px}
 }
 </style>
 </head>
@@ -612,7 +620,7 @@ footer p{color:var(--muted);font-size:0.83rem}
       <button class="f-btn" onclick="filterC('other',this)">📊 Other (1)</button>
     </div>
     <div class="certs-grid" id="certs-grid">
-      <div class="cert-card" data-cat="cisco" data-pdf="python1certificate.png" data-title="Python Essentials 1">
+      <div class="cert-card" data-cat="cisco" data-pdf="Python_Essentials_1_certificate_202501040029-mitaoe-ac-in_152541b6-9d4a-483a-ba9f-1997452e13b1 (3).pdf" data-title="Python Essentials 1">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a73e8,#4f9cf9)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,115,232,0.1);color:#60a5fa">🌐 Cisco Networking Academy</div>
@@ -624,7 +632,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="cisco" data-pdf="python2certificate.png" data-title="Python Essentials 2">
+      <div class="cert-card" data-cat="cisco" data-pdf="Python_Essentials_2_certificate_202501040029-mitaoe-ac-in_f76b22a9-0ce6-4080-9958-38a7478e6549 (3).pdf" data-title="Python Essentials 2">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a73e8,#4f9cf9)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,115,232,0.1);color:#60a5fa">🌐 Cisco Networking Academy</div>
@@ -636,7 +644,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="Aifluencyforstudent.png" data-title="AI Fluency for Students">
+      <div class="cert-card" data-cat="anthropic" data-pdf="AI fluency for students certificate by Sahil 29_20260403_150736_0000 (1).pdf" data-title="AI Fluency for Students">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -648,7 +656,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="cloude101.png" data-title="Claude 101">
+      <div class="cert-card" data-cat="anthropic" data-pdf="Claude 101 certificate by Sahil 29_20260403_151004_0000 (1).pdf" data-title="Claude 101">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -660,7 +668,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="Aifluencyframework.png" data-title="AI Fluency: Framework & Foundations">
+      <div class="cert-card" data-cat="anthropic" data-pdf="AI fluency framework and foundation Certificate by Sahil 29_20260403_151207_0000 (1).pdf" data-title="AI Fluency: Framework & Foundations">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -672,7 +680,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="Ainon.png" data-title="AI Fluency for Nonprofits">
+      <div class="cert-card" data-cat="anthropic" data-pdf="AI NON PROFIT CERTIFICATE BY SAHIL-29_20260403_150356_0000 (1).pdf" data-title="AI Fluency for Nonprofits">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic × GivingTuesday</div>
@@ -684,7 +692,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="ibm" data-pdf="Ibm1.png" data-title="Career Management Essentials">
+      <div class="cert-card" data-cat="ibm" data-pdf="IBMDesign20260424-32-61floh (1).pdf" data-title="Career Management Essentials">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a56db,#3b82f6)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,86,219,0.1);color:#93c5fd">💼 IBM SkillsBuild</div>
@@ -1030,26 +1038,29 @@ function togglePlayer(){
 // auto expand after loader
 setTimeout(()=>{playerExpanded=true;document.getElementById('music-player').classList.remove('collapsed');document.querySelector('.player-toggle').textContent='✕'},2500);
 
-/* AI CHATBOT */
+/* AI CHATBOT — Smart Local (no API, works on GitHub Pages) */
 let chatOpen=false;
 function toggleChat(){chatOpen=!chatOpen;document.getElementById('chatbot-window').classList.toggle('open',chatOpen);document.getElementById('chatbot-btn').textContent=chatOpen?'✕':'🤖'}
 function quickAsk(q){document.getElementById('chat-input').value=q;sendChat()}
 
-const SAHIL_CONTEXT=`You are Sahil Khan's AI portfolio assistant. Answer questions about Sahil concisely and enthusiastically.
-SAHIL'S INFO:
-- Name: Sahil Khan
-- College: MIT Academy of Engineering (MIT AOE), Alandi, Pune
-- Degree: B.Tech Information Technology (2024-2028)
-- 10th: 82.20% at BR Ramrao Adik Vidyalaya, Sheluwada
-- 12th: 75.60% at Vidya Bharti Junior College, Karanja Lad  
-- MHT-CET: 95.02 percentile
-- Skills: HTML (80%), CSS (70%), Python (75%), C (65%), SQL (60%), AI/ML basics (45%)
-- Projects: Smart Traffic Signal System, Mini Smart Device, Web Portfolio
-- Certificates: Python Essentials 1 & 2 (Cisco), AI Fluency for Students, Claude 101, AI Fluency Framework & Foundations, AI Fluency for Nonprofits (Anthropic), Career Management Essentials (IBM SkillsBuild), SQL (GreatLearning) — 8 total
-- Interests: Python, Web Dev, AI/ML, Gaming
-- Location: Maharashtra, India
-- Open to internships and collaborations
-Keep answers short (2-4 sentences), friendly, and use emojis. If asked something unrelated to Sahil, politely redirect.`;
+const smartReplies=[
+  {keys:['skill','know','tech','language','code'],reply:`Sahil knows: 🔧 HTML (80%), 🎨 CSS (70%), 🐍 Python (75%), ⚙️ C (65%), 🗄️ SQL (60%), and 🤖 AI/ML basics (45%). Python is his strongest passion! 💪`},
+  {keys:['certificate','cert','cisco','anthropic','ibm'],reply:`Sahil has 8 certificates! 🏆 Cisco Python Essentials 1 & 2, Anthropic AI Fluency (4 certs), IBM SkillsBuild Career Management, and GreatLearning SQL. Very impressive for a 1st year student! 🌟`},
+  {keys:['project','build','made','work','traffic','device','portfolio'],reply:`Sahil built 3 projects: 🚦 Smart Traffic Signal System (Design Thinking team project), 💡 Mini Smart Device (IoT/sensors), and 🌐 This Web Portfolio (HTML, CSS, JS). Click on any project card to see details!`},
+  {keys:['contact','email','reach','hire','internship','collab'],reply:`Sahil is open to internships & collaborations! 📧 Use the Contact section below — just scroll down and fill the form. He'll reply soon! 😊`},
+  {keys:['education','college','study','mit','mhtcet','cet','percentile','score','grade','10th','12th'],reply:`Sahil scored 95.02 percentile in MHT-CET 🎯, 82.20% in 10th, and 75.60% in 12th. Now studying B.Tech IT at MIT Academy of Engineering, Alandi, Pune (2024–2028) 🎓`},
+  {keys:['about','who','sahil','yourself','tell me'],reply:`Sahil Khan is a passionate B.Tech IT student at MIT AOE, Alandi, Pune 🚀 He loves Python, Web Dev, AI/ML, and is also a part-time gamer 🎮 He's actively earning certifications and building projects!`},
+  {keys:['interest','hobby','like','love','game','gaming'],reply:`Sahil is passionate about Python 🐍, Web Development 🌐, AI & Machine Learning 🤖, and Problem Solving. He's also a proud part-time gamer! 🎮`},
+  {keys:['hello','hi','hey','namaste','hola'],reply:`Hey there! 👋 I'm Sahil's AI assistant. Ask me anything about his skills, projects, certificates, or education! 😊`},
+];
+
+function getSmartReply(msg){
+  const lower=msg.toLowerCase();
+  for(const sr of smartReplies){
+    if(sr.keys.some(k=>lower.includes(k)))return sr.reply;
+  }
+  return `🤔 Hmm, I'm not sure about that! Try asking me about Sahil's skills, projects, certificates, or education. I know everything about him! 😄`;
+}
 
 async function sendChat(){
   const input=document.getElementById('chat-input');
@@ -1059,13 +1070,11 @@ async function sendChat(){
   const uDiv=document.createElement('div');uDiv.className='msg user';uDiv.textContent=msg;msgs.appendChild(uDiv);
   const lDiv=document.createElement('div');lDiv.className='msg loading';lDiv.textContent='💭 Thinking...';msgs.appendChild(lDiv);
   msgs.scrollTop=msgs.scrollHeight;
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SAHIL_CONTEXT,messages:[{role:'user',content:msg}]})});
-    const data=await res.json();
-    const reply=data.content?.[0]?.text||"Sorry, couldn't get a response!";
-    lDiv.className='msg bot';lDiv.textContent=reply;
-  }catch(err){lDiv.className='msg bot';lDiv.textContent="⚡ Oops! Something went wrong. Try again!"}
-  msgs.scrollTop=msgs.scrollHeight;
+  // Simulate typing delay then show smart reply
+  setTimeout(()=>{
+    lDiv.className='msg bot';lDiv.textContent=getSmartReply(msg);
+    msgs.scrollTop=msgs.scrollHeight;
+  },700);
 }
 </script>
 </body>
