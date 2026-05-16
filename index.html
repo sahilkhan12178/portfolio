@@ -75,8 +75,52 @@ nav ul li a:hover,nav ul li a.active{color:var(--accent);background:rgba(0,229,2
 .theme-btn{width:40px;height:22px;border-radius:11px;border:none;cursor:none;background:var(--glass2);position:relative;transition:background 0.3s;border:1px solid var(--border)}
 .theme-btn::after{content:'';position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform 0.3s}
 [data-theme="light"] .theme-btn::after{transform:translateX(18px)}
-.color-btn{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:conic-gradient(#00e5ff,#8b5cf6,#f59e0b,#10b981,#00e5ff);cursor:none;position:relative;transition:transform 0.2s}
-.color-btn:hover{transform:scale(1.15)}
+
+/* ─────────────────────────────────────────────
+   COLOR BTN — ONLY CHANGED SECTION
+   Profile image shown inside; colorful ring border;
+   fallback conic gradient if image fails.
+   Color-change feature completely unchanged.
+───────────────────────────────────────────── */
+.color-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  /* Colorful multi-stop border — replaces plain border */
+  border: 2.5px solid var(--accent);
+  box-shadow: 0 0 0 1.5px #8b5cf6, 0 0 0 3px rgba(245,158,11,0.45);
+  cursor: none;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.3s;
+  overflow: hidden; /* clips the photo to circle */
+  flex-shrink: 0;
+}
+.color-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2px #00e5ff, 0 0 0 4px #8b5cf6, 0 0 0 5.5px rgba(245,158,11,0.5);
+}
+/* Conic-gradient fallback — shows if image fails to load */
+.color-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(#00e5ff, #8b5cf6, #f59e0b, #10b981, #00e5ff);
+  z-index: 0;
+}
+/* Profile image sits above the gradient fallback */
+.color-btn img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 50%;
+  display: block;
+}
+/* ───────────────── END CHANGE ───────────────── */
+
 .color-picker-panel{position:absolute;top:54px;right:5%;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:16px;display:none;flex-wrap:wrap;gap:10px;width:200px;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
 .color-picker-panel.open{display:flex}
 .cp-swatch{width:32px;height:32px;border-radius:50%;cursor:none;border:2px solid transparent;transition:all 0.2s}
@@ -163,7 +207,6 @@ h2.sec-h{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,5vw,3.5re
   width:174px;height:174px;
   margin-bottom:20px;margin-top:30px;
 }
-/* Spinning gradient ring — outermost layer */
 .avatar-spin{
   position:absolute;
   inset:0;
@@ -179,10 +222,9 @@ h2.sec-h{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,5vw,3.5re
   animation:spin 4s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-/* Dark gap ring — sits between spinner and image */
 .avatar-mask{
   position:absolute;
-  inset:5px;          /* 5px gap from spinner edge */
+  inset:5px;
   border-radius:50%;
   overflow:hidden;
   background:var(--bg);
@@ -196,8 +238,6 @@ h2.sec-h{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,5vw,3.5re
   display:block;
 }
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-/* Fallback emoji when image fails */
 .avatar-mask::before{
   content:'👤';
   position:absolute;inset:0;
@@ -360,10 +400,10 @@ footer p{color:var(--muted);font-size:0.83rem}
 .cert-modal-close:hover{transform:scale(1.05)}
 .cert-modal-title{color:#fff;font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600}
 
-/* ── MUSIC PLAYER — moved up (bottom:160px) ── */
+/* ── MUSIC PLAYER ── */
 #music-player{
   position:fixed;
-  bottom:160px;   /* ← MOVED UP from 90px */
+  bottom:160px;
   right:26px;
   z-index:97;
   background:rgba(11,15,28,0.96);
@@ -459,7 +499,6 @@ footer p{color:var(--muted);font-size:0.83rem}
   .contact-wrap{padding:30px 20px}
   #chatbot-window{width:calc(100vw - 32px);right:16px}
   .badges-row{gap:10px}
-  /* Music player mobile — also moved up */
   #music-player{bottom:160px;right:16px;min-width:200px}
 }
 </style>
@@ -559,8 +598,12 @@ footer p{color:var(--muted);font-size:0.83rem}
   </nav>
   <div class="header-actions">
     <button class="theme-btn" id="theme-btn" title="Toggle theme"></button>
-    <div class="color-btn" id="color-btn" title="Change accent color"></div>
-    <!-- ── HAMBURGER — right side, 3 dash, styled ── -->
+
+    <!-- ── COLOR BTN — profile image added, color-change JS unchanged ── -->
+    <div class="color-btn" id="color-btn" title="Change accent color">
+      <img src="sahilkhan.jpg" alt="Sahil Khan">
+    </div>
+
     <div class="hamburger" id="ham" onclick="toggleMobile()">
       <span></span>
       <span></span>
@@ -569,7 +612,7 @@ footer p{color:var(--muted);font-size:0.83rem}
   </div>
 </header>
 
-<!-- MOBILE NAV — slides down from header -->
+<!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobile-nav">
   <a href="#hero" onclick="closeMobile()">🏠 Home</a>
   <a href="#about" onclick="closeMobile()">👤 About</a>
@@ -585,7 +628,6 @@ footer p{color:var(--muted);font-size:0.83rem}
 <!-- HERO -->
 <section id="hero">
   <div class="hero-grid"></div>
-  <!-- Profile image with colorful spinning ring -->
   <div class="avatar-outer">
     <div class="avatar-spin"></div>
     <div class="avatar-mask">
@@ -861,7 +903,6 @@ footer p{color:var(--muted);font-size:0.83rem}
 </footer>
 
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-<!-- ❌ KONAMI HINT REMOVED -->
 
 <!-- AI CHATBOT -->
 <button id="chatbot-btn" onclick="toggleChat()" title="Chat with AI">🤖</button>
@@ -929,7 +970,7 @@ document.getElementById('theme-btn').addEventListener('click',()=>{
   showToast(isDark?'☀️ Light mode on!':'🌙 Dark mode on!');
 });
 
-/* COLOR PICKER */
+/* COLOR PICKER — completely unchanged */
 const colorBtn=document.getElementById('color-btn'),colorPanel=document.getElementById('color-panel');
 colorBtn.addEventListener('click',e=>{e.stopPropagation();colorPanel.classList.toggle('open')});
 document.addEventListener('click',()=>colorPanel.classList.remove('open'));
@@ -1009,25 +1050,16 @@ function filterC(cat,btn){
   document.querySelectorAll('.cert-card').forEach(c=>{c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none'});
 }
 
-/* CERT PREVIEW — handles PNG/JPG as image, PDF as iframe */
+/* CERT PREVIEW */
 function openCertPreview(card){
-  const src = card.dataset.pdf;
-  const title = card.dataset.title;
+  const src=card.dataset.pdf;
+  const title=card.dataset.title;
   document.getElementById('cert-modal-title').textContent='📄 '+title;
-  const isImage = /\.(png|jpg|jpeg|gif|webp)$/i.test(src);
-  const imgEl = document.getElementById('cert-modal-img');
-  const frameEl = document.getElementById('cert-frame');
-  if(isImage){
-    imgEl.src = src;
-    imgEl.style.display = 'block';
-    frameEl.style.display = 'none';
-    frameEl.src = '';
-  } else {
-    frameEl.src = src;
-    frameEl.style.display = 'block';
-    imgEl.style.display = 'none';
-    imgEl.src = '';
-  }
+  const isImage=/\.(png|jpg|jpeg|gif|webp)$/i.test(src);
+  const imgEl=document.getElementById('cert-modal-img');
+  const frameEl=document.getElementById('cert-frame');
+  if(isImage){imgEl.src=src;imgEl.style.display='block';frameEl.style.display='none';frameEl.src=''}
+  else{frameEl.src=src;frameEl.style.display='block';imgEl.style.display='none';imgEl.src=''}
   document.getElementById('cert-modal').classList.add('open');
 }
 function closeCertModal(){
@@ -1050,7 +1082,7 @@ function openModal(key){
 document.getElementById('modal-close').onclick=()=>document.getElementById('modal-overlay').classList.remove('open');
 document.getElementById('modal-overlay').onclick=e=>{if(e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open')};
 
-/* ── MOBILE NAV — hamburger toggle with animation ── */
+/* MOBILE NAV */
 function toggleMobile(){
   const mn=document.getElementById('mobile-nav');
   const ham=document.getElementById('ham');
@@ -1062,14 +1094,10 @@ function closeMobile(){
   document.getElementById('mobile-nav').classList.remove('show');
   document.getElementById('ham').classList.remove('open');
 }
-// Close on outside click
 document.addEventListener('click',e=>{
   const mn=document.getElementById('mobile-nav');
   const ham=document.getElementById('ham');
-  if(!mn.contains(e.target)&&!ham.contains(e.target)){
-    mn.classList.remove('show');
-    ham.classList.remove('open');
-  }
+  if(!mn.contains(e.target)&&!ham.contains(e.target)){mn.classList.remove('show');ham.classList.remove('open')}
 });
 
 /* TOAST */
@@ -1085,7 +1113,7 @@ function sendMsg(){
   document.getElementById('f-name').value='';document.getElementById('f-email').value='';document.getElementById('f-msg').value='';
 }
 
-/* KONAMI (easter egg stays, hint removed) */
+/* KONAMI */
 const KONAMI=[38,38,40,40,37,39,37,39,66,65];let kIdx=0;
 document.addEventListener('keydown',e=>{
   if(e.keyCode===KONAMI[kIdx]){kIdx++;if(kIdx===KONAMI.length){kIdx=0;triggerEasterEgg()}}else kIdx=0;
