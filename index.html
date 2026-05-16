@@ -82,9 +82,9 @@ nav ul li a:hover,nav ul li a.active{color:var(--accent);background:rgba(0,229,2
 .cp-swatch{width:32px;height:32px;border-radius:50%;cursor:none;border:2px solid transparent;transition:all 0.2s}
 .cp-swatch:hover,.cp-swatch.active{transform:scale(1.2);border-color:#fff}
 
-/* ── HAMBURGER ── */
+/* ── HAMBURGER — always visible ── */
 .hamburger{
-  display:none;
+  display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
@@ -160,14 +160,13 @@ h2.sec-h{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,5vw,3.5re
 /* ── PROFILE — Colorful spinning circle with image ── */
 .avatar-outer{
   position:relative;
-  width:170px;height:170px;
+  width:174px;height:174px;
   margin-bottom:20px;margin-top:30px;
-  display:flex;align-items:center;justify-content:center;
 }
-/* Spinning gradient ring */
+/* Spinning gradient ring — outermost layer */
 .avatar-spin{
   position:absolute;
-  inset:-4px;
+  inset:0;
   border-radius:50%;
   background:conic-gradient(
     from 0deg,
@@ -178,26 +177,15 @@ h2.sec-h{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,5vw,3.5re
     #00e5ff 100%
   );
   animation:spin 4s linear infinite;
-  z-index:1;
-}
-/* White gap between spin ring and image */
-.avatar-gap{
-  position:absolute;
-  inset:-1px;
-  border-radius:50%;
-  background:var(--bg);
-  z-index:2;
-  margin:4px;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-/* Image container */
+/* Dark gap ring — sits between spinner and image */
 .avatar-mask{
-  position:relative;
-  z-index:3;
-  width:162px;height:162px;
+  position:absolute;
+  inset:5px;          /* 5px gap from spinner edge */
   border-radius:50%;
   overflow:hidden;
-  border:3px solid var(--bg);
+  background:var(--bg);
 }
 .avatar-mask img{
   width:100%;height:100%;
@@ -207,7 +195,17 @@ h2.sec-h{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,5vw,3.5re
   animation:float 5s ease-in-out infinite;
   display:block;
 }
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* Fallback emoji when image fails */
+.avatar-mask::before{
+  content:'👤';
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:4rem;
+  z-index:0;
+}
+.avatar-mask img{position:relative;z-index:1}
 
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);color:var(--accent);font-size:0.78rem;font-weight:700;padding:6px 18px;border-radius:30px;margin-bottom:22px;letter-spacing:0.5px}
 .hero-name{font-family:'Clash Display',sans-serif;font-size:clamp(3.5rem,10vw,7rem);font-weight:700;letter-spacing:-4px;line-height:0.9;background:linear-gradient(135deg,var(--text) 50%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:22px}
@@ -356,7 +354,8 @@ footer p{color:var(--muted);font-size:0.83rem}
 /* CERT PREVIEW MODAL */
 #cert-modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(12px);z-index:600;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
 #cert-modal.open{display:flex}
-#cert-modal iframe{width:min(900px,95vw);height:80vh;border:none;border-radius:16px;background:#fff}
+#cert-modal-img{max-width:min(900px,95vw);max-height:80vh;border-radius:16px;object-fit:contain;display:none}
+#cert-frame{width:min(900px,95vw);height:80vh;border:none;border-radius:16px;background:#fff;display:none}
 .cert-modal-close{background:var(--accent);color:#000;border:none;padding:10px 28px;border-radius:30px;font-weight:700;font-size:0.9rem;cursor:none;transition:all 0.2s}
 .cert-modal-close:hover{transform:scale(1.05)}
 .cert-modal-title{color:#fff;font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600}
@@ -452,7 +451,6 @@ footer p{color:var(--muted);font-size:0.83rem}
   .about-grid{grid-template-columns:1fr;gap:40px}
   .skills-bars-wrap{grid-template-columns:1fr}
   nav{display:none}
-  .hamburger{display:flex}
 }
 @media(max-width:600px){
   section{padding:80px 5%}
@@ -511,6 +509,7 @@ footer p{color:var(--muted);font-size:0.83rem}
 <!-- CERT PREVIEW MODAL -->
 <div id="cert-modal">
   <div class="cert-modal-title" id="cert-modal-title"></div>
+  <img id="cert-modal-img" src="" alt="Certificate">
   <iframe id="cert-frame" src=""></iframe>
   <button class="cert-modal-close" onclick="closeCertModal()">✕ Close</button>
 </div>
@@ -728,7 +727,7 @@ footer p{color:var(--muted);font-size:0.83rem}
       <button class="f-btn" onclick="filterC('other',this)">📊 Other (1)</button>
     </div>
     <div class="certs-grid" id="certs-grid">
-      <div class="cert-card" data-cat="cisco" data-pdf="python1certificate.png" data-title="Python Essentials 1">
+      <div class="cert-card" data-cat="cisco" data-pdf="Python_Essentials_1_certificate_202501040029-mitaoe-ac-in_152541b6-9d4a-483a-ba9f-1997452e13b1 (3).pdf" data-title="Python Essentials 1">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a73e8,#4f9cf9)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,115,232,0.1);color:#60a5fa">🌐 Cisco Networking Academy</div>
@@ -740,7 +739,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="cisco" data-pdf="python2certificate.png" data-title="Python Essentials 2">
+      <div class="cert-card" data-cat="cisco" data-pdf="Python_Essentials_2_certificate_202501040029-mitaoe-ac-in_f76b22a9-0ce6-4080-9958-38a7478e6549 (3).pdf" data-title="Python Essentials 2">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a73e8,#4f9cf9)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,115,232,0.1);color:#60a5fa">🌐 Cisco Networking Academy</div>
@@ -752,7 +751,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="Aifluencyforstudent.png" data-title="AI Fluency for Students">
+      <div class="cert-card" data-cat="anthropic" data-pdf="AI fluency for students certificate by Sahil 29_20260403_150736_0000 (1).pdf" data-title="AI Fluency for Students">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -764,7 +763,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="cloude101.png" data-title="Claude 101">
+      <div class="cert-card" data-cat="anthropic" data-pdf="Claude 101 certificate by Sahil 29_20260403_151004_0000 (1).pdf" data-title="Claude 101">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -776,7 +775,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="Aifluencyframework.png" data-title="AI Fluency: Framework & Foundations">
+      <div class="cert-card" data-cat="anthropic" data-pdf="AI fluency framework and foundation Certificate by Sahil 29_20260403_151207_0000 (1).pdf" data-title="AI Fluency: Framework & Foundations">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -788,7 +787,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="Ainon.png" data-title="AI Fluency for Nonprofits">
+      <div class="cert-card" data-cat="anthropic" data-pdf="AI NON PROFIT CERTIFICATE BY SAHIL-29_20260403_150356_0000 (1).pdf" data-title="AI Fluency for Nonprofits">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic × GivingTuesday</div>
@@ -800,7 +799,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="ibm" data-pdf="Ibm1.png" data-title="Career Management Essentials">
+      <div class="cert-card" data-cat="ibm" data-pdf="IBMDesign20260424-32-61floh (1).pdf" data-title="Career Management Essentials">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a56db,#3b82f6)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,86,219,0.1);color:#93c5fd">💼 IBM SkillsBuild</div>
@@ -1010,15 +1009,31 @@ function filterC(cat,btn){
   document.querySelectorAll('.cert-card').forEach(c=>{c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none'});
 }
 
-/* CERT PREVIEW */
+/* CERT PREVIEW — handles PNG/JPG as image, PDF as iframe */
 function openCertPreview(card){
-  document.getElementById('cert-modal-title').textContent='📄 '+card.dataset.title;
-  document.getElementById('cert-frame').src=card.dataset.pdf;
+  const src = card.dataset.pdf;
+  const title = card.dataset.title;
+  document.getElementById('cert-modal-title').textContent='📄 '+title;
+  const isImage = /\.(png|jpg|jpeg|gif|webp)$/i.test(src);
+  const imgEl = document.getElementById('cert-modal-img');
+  const frameEl = document.getElementById('cert-frame');
+  if(isImage){
+    imgEl.src = src;
+    imgEl.style.display = 'block';
+    frameEl.style.display = 'none';
+    frameEl.src = '';
+  } else {
+    frameEl.src = src;
+    frameEl.style.display = 'block';
+    imgEl.style.display = 'none';
+    imgEl.src = '';
+  }
   document.getElementById('cert-modal').classList.add('open');
 }
 function closeCertModal(){
   document.getElementById('cert-modal').classList.remove('open');
   document.getElementById('cert-frame').src='';
+  document.getElementById('cert-modal-img').src='';
 }
 
 /* PROJECT MODAL */
