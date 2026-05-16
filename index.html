@@ -81,11 +81,66 @@ nav ul li a:hover,nav ul li a.active{color:var(--accent);background:rgba(0,229,2
 .color-picker-panel.open{display:flex}
 .cp-swatch{width:32px;height:32px;border-radius:50%;cursor:none;border:2px solid transparent;transition:all 0.2s}
 .cp-swatch:hover,.cp-swatch.active{transform:scale(1.2);border-color:#fff}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:6px}
-.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s}
-.mobile-nav{display:none;position:fixed;top:64px;left:0;right:0;background:var(--bg2);backdrop-filter:blur(20px);padding:16px;z-index:99;border-bottom:1px solid var(--border);flex-direction:column;gap:6px}
-.mobile-nav a{color:var(--muted2);text-decoration:none;padding:11px 16px;border-radius:10px;font-weight:500;transition:all 0.2s;display:block}
-.mobile-nav a:hover{color:var(--accent);background:rgba(0,229,255,0.07)}
+
+/* ── HAMBURGER ── */
+.hamburger{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  cursor:none;
+  padding:8px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--glass2);
+  width:40px;height:40px;
+  transition:all 0.25s;
+  flex-shrink:0;
+}
+.hamburger:hover{border-color:var(--border2);background:rgba(0,229,255,0.08)}
+.hamburger span{
+  width:18px;height:2px;
+  background:var(--text);
+  border-radius:2px;
+  transition:all 0.3s;
+  display:block;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── MOBILE NAV ── */
+.mobile-nav{
+  display:none;
+  position:fixed;
+  top:64px;left:0;right:0;
+  background:rgba(7,9,15,0.97);
+  backdrop-filter:blur(24px);
+  padding:12px 16px 20px;
+  z-index:99;
+  border-bottom:1px solid var(--border2);
+  flex-direction:column;
+  gap:4px;
+  animation:slideDown 0.25s ease;
+}
+[data-theme="light"] .mobile-nav{background:rgba(248,250,252,0.98)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.mobile-nav.show{display:flex}
+.mobile-nav a{
+  color:var(--muted2);
+  text-decoration:none;
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:600;
+  font-size:0.95rem;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid transparent;
+}
+.mobile-nav a:hover{color:var(--accent);background:rgba(0,229,255,0.07);border-color:rgba(0,229,255,0.12)}
 
 /* SCROLL PROGRESS */
 #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:200;transition:width 0.1s;width:0%}
@@ -102,12 +157,56 @@ h2.sec-h{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,5vw,3.5re
 #hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:64px;position:relative;overflow:hidden}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);pointer-events:none}
 
-/* PROFILE — circle, niche */
-.avatar-outer{position:relative;width:170px;height:170px;margin-bottom:20px;margin-top:30px}
-.avatar-spin{position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 0deg,var(--accent),var(--purple),var(--gold),var(--accent));animation:spin 6s linear infinite}
+/* ── PROFILE — Colorful spinning circle with image ── */
+.avatar-outer{
+  position:relative;
+  width:170px;height:170px;
+  margin-bottom:20px;margin-top:30px;
+  display:flex;align-items:center;justify-content:center;
+}
+/* Spinning gradient ring */
+.avatar-spin{
+  position:absolute;
+  inset:-4px;
+  border-radius:50%;
+  background:conic-gradient(
+    from 0deg,
+    #00e5ff 0%,
+    #8b5cf6 25%,
+    #f59e0b 50%,
+    #10b981 75%,
+    #00e5ff 100%
+  );
+  animation:spin 4s linear infinite;
+  z-index:1;
+}
+/* White gap between spin ring and image */
+.avatar-gap{
+  position:absolute;
+  inset:-1px;
+  border-radius:50%;
+  background:var(--bg);
+  z-index:2;
+  margin:4px;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
-.avatar-mask{position:relative;z-index:1;width:170px;height:170px;border-radius:50%;overflow:hidden;border:4px solid var(--bg)}
-.avatar-mask img{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;animation:float 5s ease-in-out infinite}
+/* Image container */
+.avatar-mask{
+  position:relative;
+  z-index:3;
+  width:162px;height:162px;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid var(--bg);
+}
+.avatar-mask img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center top;
+  border-radius:50%;
+  animation:float 5s ease-in-out infinite;
+  display:block;
+}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);color:var(--accent);font-size:0.78rem;font-weight:700;padding:6px 18px;border-radius:30px;margin-bottom:22px;letter-spacing:0.5px}
@@ -173,7 +272,7 @@ h2.sec-h{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,5vw,3.5re
 .t-card h3{font-family:'Clash Display',sans-serif;font-size:1rem;font-weight:600;color:var(--text);margin-bottom:10px}
 .t-card p{color:var(--muted2);font-size:0.92rem;line-height:1.8}
 
-/* SKILLS — NO RADAR, full width bars */
+/* SKILLS */
 #skills{background:var(--bg2)}
 .skills-bars-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .sk-item{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:20px 24px;transition:border-color 0.3s,transform 0.3s}
@@ -262,9 +361,12 @@ footer p{color:var(--muted);font-size:0.83rem}
 .cert-modal-close:hover{transform:scale(1.05)}
 .cert-modal-title{color:#fff;font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600}
 
-/* MUSIC PLAYER */
+/* ── MUSIC PLAYER — moved up (bottom:160px) ── */
 #music-player{
-  position:fixed;bottom:90px;right:26px;z-index:97;
+  position:fixed;
+  bottom:160px;   /* ← MOVED UP from 90px */
+  right:26px;
+  z-index:97;
   background:rgba(11,15,28,0.96);
   border:1px solid var(--border2);
   border-radius:20px;padding:14px 18px;
@@ -315,9 +417,6 @@ footer p{color:var(--muted);font-size:0.83rem}
 .confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;animation:confettiFall 3s linear forwards;pointer-events:none;z-index:10000}
 @keyframes confettiFall{0%{transform:translateY(-100px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 
-/* KONAMI HINT */
-#konami-hint{position:fixed;bottom:84px;left:26px;background:var(--glass2);border:1px solid var(--border);border-radius:12px;padding:8px 16px;font-size:0.75rem;color:var(--muted);z-index:50;display:flex;align-items:center;gap:8px}
-
 /* AI CHATBOT */
 #chatbot-btn{position:fixed;bottom:26px;right:26px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));border:none;cursor:none;font-size:1.4rem;display:flex;align-items:center;justify-content:center;z-index:98;box-shadow:0 4px 24px rgba(0,229,255,0.4);transition:all 0.3s;animation:chatPulse 2s ease-in-out infinite}
 @keyframes chatPulse{0%,100%{box-shadow:0 4px 24px rgba(0,229,255,0.4)}50%{box-shadow:0 4px 36px rgba(0,229,255,0.7)}}
@@ -362,7 +461,8 @@ footer p{color:var(--muted);font-size:0.83rem}
   .contact-wrap{padding:30px 20px}
   #chatbot-window{width:calc(100vw - 32px);right:16px}
   .badges-row{gap:10px}
-  #music-player{bottom:90px;right:16px;min-width:200px}
+  /* Music player mobile — also moved up */
+  #music-player{bottom:160px;right:16px;min-width:200px}
 }
 </style>
 </head>
@@ -461,19 +561,24 @@ footer p{color:var(--muted);font-size:0.83rem}
   <div class="header-actions">
     <button class="theme-btn" id="theme-btn" title="Toggle theme"></button>
     <div class="color-btn" id="color-btn" title="Change accent color"></div>
+    <!-- ── HAMBURGER — right side, 3 dash, styled ── -->
     <div class="hamburger" id="ham" onclick="toggleMobile()">
-      <span></span><span></span><span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
   </div>
 </header>
+
+<!-- MOBILE NAV — slides down from header -->
 <div class="mobile-nav" id="mobile-nav">
-  <a href="#hero" onclick="closeMobile()">Home</a>
-  <a href="#about" onclick="closeMobile()">About</a>
-  <a href="#timeline" onclick="closeMobile()">Journey</a>
-  <a href="#skills" onclick="closeMobile()">Skills</a>
-  <a href="#projects" onclick="closeMobile()">Projects</a>
-  <a href="#certificates" onclick="closeMobile()">Certificates</a>
-  <a href="#contact" onclick="closeMobile()">Contact</a>
+  <a href="#hero" onclick="closeMobile()">🏠 Home</a>
+  <a href="#about" onclick="closeMobile()">👤 About</a>
+  <a href="#timeline" onclick="closeMobile()">🗺️ Journey</a>
+  <a href="#skills" onclick="closeMobile()">⚡ Skills</a>
+  <a href="#projects" onclick="closeMobile()">🔨 Projects</a>
+  <a href="#certificates" onclick="closeMobile()">🏆 Certificates</a>
+  <a href="#contact" onclick="closeMobile()">📧 Contact</a>
 </div>
 
 <main>
@@ -481,9 +586,12 @@ footer p{color:var(--muted);font-size:0.83rem}
 <!-- HERO -->
 <section id="hero">
   <div class="hero-grid"></div>
+  <!-- Profile image with colorful spinning ring -->
   <div class="avatar-outer">
     <div class="avatar-spin"></div>
-    <div class="avatar-mask"><img src="sahilkhan.jpg" alt="Sahil Khan"></div>
+    <div class="avatar-mask">
+      <img src="sahilkhan.jpg" alt="Sahil Khan">
+    </div>
   </div>
   <div class="hero-tag">🎓 B.Tech IT · MIT AOE Alandi</div>
   <h1 class="hero-name">Sahil Khan</h1>
@@ -578,7 +686,7 @@ footer p{color:var(--muted);font-size:0.83rem}
   </div>
 </section>
 
-<!-- SKILLS — no radar, full 2-col grid -->
+<!-- SKILLS -->
 <section id="skills">
   <div class="container">
     <div class="section-tag">What I Know</div>
@@ -620,7 +728,7 @@ footer p{color:var(--muted);font-size:0.83rem}
       <button class="f-btn" onclick="filterC('other',this)">📊 Other (1)</button>
     </div>
     <div class="certs-grid" id="certs-grid">
-      <div class="cert-card" data-cat="cisco" data-pdf="Python_Essentials_1_certificate_202501040029-mitaoe-ac-in_152541b6-9d4a-483a-ba9f-1997452e13b1 (3).pdf" data-title="Python Essentials 1">
+      <div class="cert-card" data-cat="cisco" data-pdf="python1certificate.png" data-title="Python Essentials 1">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a73e8,#4f9cf9)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,115,232,0.1);color:#60a5fa">🌐 Cisco Networking Academy</div>
@@ -632,7 +740,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="cisco" data-pdf="Python_Essentials_2_certificate_202501040029-mitaoe-ac-in_f76b22a9-0ce6-4080-9958-38a7478e6549 (3).pdf" data-title="Python Essentials 2">
+      <div class="cert-card" data-cat="cisco" data-pdf="python2certificate.png" data-title="Python Essentials 2">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a73e8,#4f9cf9)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,115,232,0.1);color:#60a5fa">🌐 Cisco Networking Academy</div>
@@ -644,7 +752,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="AI fluency for students certificate by Sahil 29_20260403_150736_0000 (1).pdf" data-title="AI Fluency for Students">
+      <div class="cert-card" data-cat="anthropic" data-pdf="Aifluencyforstudent.png" data-title="AI Fluency for Students">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -656,7 +764,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="Claude 101 certificate by Sahil 29_20260403_151004_0000 (1).pdf" data-title="Claude 101">
+      <div class="cert-card" data-cat="anthropic" data-pdf="cloude101.png" data-title="Claude 101">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -668,7 +776,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="AI fluency framework and foundation Certificate by Sahil 29_20260403_151207_0000 (1).pdf" data-title="AI Fluency: Framework & Foundations">
+      <div class="cert-card" data-cat="anthropic" data-pdf="Aifluencyframework.png" data-title="AI Fluency: Framework & Foundations">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic</div>
@@ -680,7 +788,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="anthropic" data-pdf="AI NON PROFIT CERTIFICATE BY SAHIL-29_20260403_150356_0000 (1).pdf" data-title="AI Fluency for Nonprofits">
+      <div class="cert-card" data-cat="anthropic" data-pdf="Ainon.png" data-title="AI Fluency for Nonprofits">
         <div class="cert-top" style="background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(124,58,237,0.1);color:#c084fc">🤖 Anthropic × GivingTuesday</div>
@@ -692,7 +800,7 @@ footer p{color:var(--muted);font-size:0.83rem}
           </div>
         </div>
       </div>
-      <div class="cert-card" data-cat="ibm" data-pdf="IBMDesign20260424-32-61floh (1).pdf" data-title="Career Management Essentials">
+      <div class="cert-card" data-cat="ibm" data-pdf="Ibm1.png" data-title="Career Management Essentials">
         <div class="cert-top" style="background:linear-gradient(90deg,#1a56db,#3b82f6)"></div>
         <div class="cert-body">
           <div class="cert-org" style="background:rgba(26,86,219,0.1);color:#93c5fd">💼 IBM SkillsBuild</div>
@@ -754,7 +862,7 @@ footer p{color:var(--muted);font-size:0.83rem}
 </footer>
 
 <button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-<div id="konami-hint">🎮 Try: ↑↑↓↓←→←→BA</div>
+<!-- ❌ KONAMI HINT REMOVED -->
 
 <!-- AI CHATBOT -->
 <button id="chatbot-btn" onclick="toggleChat()" title="Chat with AI">🤖</button>
@@ -793,7 +901,7 @@ document.querySelectorAll('a,button,.proj-card,.cert-card,.chip,.cp-swatch,.badg
   el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.width='34px';ring.style.height='34px'});
 });
 
-/* ══ PARTICLE SYSTEM ══ */
+/* PARTICLE SYSTEM */
 (function(){
   const canvas=document.getElementById('particle-canvas');
   const ctx=canvas.getContext('2d');
@@ -801,59 +909,16 @@ document.querySelectorAll('a,button,.proj-card,.cert-card,.chip,.cp-swatch,.badg
   function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
   resize();
   window.addEventListener('resize',()=>{resize();initParticles()});
-
   class Particle{
     constructor(){this.reset()}
-    reset(){
-      this.x=Math.random()*W;
-      this.y=Math.random()*H;
-      this.r=Math.random()*1.8+0.3;
-      this.vx=(Math.random()-0.5)*0.3;
-      this.vy=(Math.random()-0.5)*0.3;
-      this.life=Math.random();
-      this.maxLife=Math.random()*0.6+0.2;
-      this.growing=true;
-    }
-    update(){
-      this.x+=this.vx;this.y+=this.vy;
-      if(this.growing){this.life+=0.005;if(this.life>=this.maxLife)this.growing=false}
-      else{this.life-=0.004;if(this.life<=0)this.reset()}
-      if(this.x<0||this.x>W)this.vx*=-1;
-      if(this.y<0||this.y>H)this.vy*=-1;
-    }
-    draw(){
-      const accent=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#00e5ff';
-      ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-      ctx.fillStyle=accent+(Math.floor(this.life*200).toString(16).padStart(2,'0'));
-      ctx.fill();
-    }
+    reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.8+0.3;this.vx=(Math.random()-0.5)*0.3;this.vy=(Math.random()-0.5)*0.3;this.life=Math.random();this.maxLife=Math.random()*0.6+0.2;this.growing=true}
+    update(){this.x+=this.vx;this.y+=this.vy;if(this.growing){this.life+=0.005;if(this.life>=this.maxLife)this.growing=false}else{this.life-=0.004;if(this.life<=0)this.reset()}if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1}
+    draw(){const accent=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#00e5ff';ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=accent+(Math.floor(this.life*200).toString(16).padStart(2,'0'));ctx.fill()}
   }
-
-  // connection lines between close particles
-  function drawConnections(){
-    const accent=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#00e5ff';
-    for(let i=0;i<particles.length;i++){
-      for(let j=i+1;j<particles.length;j++){
-        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
-        const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<120){
-          ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
-          const alpha=Math.floor((1-dist/120)*40).toString(16).padStart(2,'0');
-          ctx.strokeStyle=accent+alpha;ctx.lineWidth=0.5;ctx.stroke();
-        }
-      }
-    }
-  }
-
+  function drawConnections(){const accent=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#00e5ff';for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;const dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);const alpha=Math.floor((1-dist/120)*40).toString(16).padStart(2,'0');ctx.strokeStyle=accent+alpha;ctx.lineWidth=0.5;ctx.stroke()}}}}
   function initParticles(){particles=[];for(let i=0;i<90;i++)particles.push(new Particle())}
   initParticles();
-
-  function animate(){
-    ctx.clearRect(0,0,W,H);
-    drawConnections();
-    particles.forEach(p=>{p.update();p.draw()});
-    requestAnimationFrame(animate);
-  }
+  function animate(){ctx.clearRect(0,0,W,H);drawConnections();particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animate)}
   animate();
 })();
 
@@ -970,9 +1035,27 @@ function openModal(key){
 document.getElementById('modal-close').onclick=()=>document.getElementById('modal-overlay').classList.remove('open');
 document.getElementById('modal-overlay').onclick=e=>{if(e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open')};
 
-/* MOBILE NAV */
-function toggleMobile(){const mn=document.getElementById('mobile-nav');mn.style.display=mn.style.display==='flex'?'none':'flex'}
-function closeMobile(){document.getElementById('mobile-nav').style.display='none'}
+/* ── MOBILE NAV — hamburger toggle with animation ── */
+function toggleMobile(){
+  const mn=document.getElementById('mobile-nav');
+  const ham=document.getElementById('ham');
+  const isOpen=mn.classList.contains('show');
+  mn.classList.toggle('show',!isOpen);
+  ham.classList.toggle('open',!isOpen);
+}
+function closeMobile(){
+  document.getElementById('mobile-nav').classList.remove('show');
+  document.getElementById('ham').classList.remove('open');
+}
+// Close on outside click
+document.addEventListener('click',e=>{
+  const mn=document.getElementById('mobile-nav');
+  const ham=document.getElementById('ham');
+  if(!mn.contains(e.target)&&!ham.contains(e.target)){
+    mn.classList.remove('show');
+    ham.classList.remove('open');
+  }
+});
 
 /* TOAST */
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
@@ -987,7 +1070,7 @@ function sendMsg(){
   document.getElementById('f-name').value='';document.getElementById('f-email').value='';document.getElementById('f-msg').value='';
 }
 
-/* KONAMI */
+/* KONAMI (easter egg stays, hint removed) */
 const KONAMI=[38,38,40,40,37,39,37,39,66,65];let kIdx=0;
 document.addEventListener('keydown',e=>{
   if(e.keyCode===KONAMI[kIdx]){kIdx++;if(kIdx===KONAMI.length){kIdx=0;triggerEasterEgg()}}else kIdx=0;
@@ -1005,7 +1088,7 @@ function triggerEasterEgg(){
 }
 function closeEgg(){document.getElementById('easter-egg').classList.remove('show')}
 
-/* ══ MUSIC PLAYER ══ */
+/* MUSIC PLAYER */
 const tracks=[
   {name:'Lo-Fi Focus',artist:'Ambient Beats',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
   {name:'Chill Waves',artist:'Study Vibes',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'},
@@ -1014,35 +1097,19 @@ const tracks=[
 let trackIdx=0,playing=false,playerExpanded=false;
 const audio=new Audio();audio.volume=0.3;audio.loop=false;
 audio.addEventListener('ended',nextTrack);
-
-function loadTrack(idx){
-  audio.src=tracks[idx].url;
-  document.getElementById('player-song').textContent=tracks[idx].name;
-  document.querySelector('.player-artist').textContent=tracks[idx].artist;
-}
+function loadTrack(idx){audio.src=tracks[idx].url;document.getElementById('player-song').textContent=tracks[idx].name;document.querySelector('.player-artist').textContent=tracks[idx].artist}
 loadTrack(0);
-
-function togglePlay(){
-  if(playing){audio.pause();playing=false;document.getElementById('p-play-btn').textContent='▶';setEqState(true)}
-  else{audio.play().catch(()=>{});playing=true;document.getElementById('p-play-btn').textContent='⏸';setEqState(false)}
-}
+function togglePlay(){if(playing){audio.pause();playing=false;document.getElementById('p-play-btn').textContent='▶';setEqState(true)}else{audio.play().catch(()=>{});playing=true;document.getElementById('p-play-btn').textContent='⏸';setEqState(false)}}
 function nextTrack(){trackIdx=(trackIdx+1)%tracks.length;loadTrack(trackIdx);if(playing)audio.play().catch(()=>{})}
 function prevTrack(){trackIdx=(trackIdx-1+tracks.length)%tracks.length;loadTrack(trackIdx);if(playing)audio.play().catch(()=>{})}
 function setEqState(paused){document.querySelectorAll('.eq-bar').forEach(b=>b.classList.toggle('paused',paused))}
-
-function togglePlayer(){
-  playerExpanded=!playerExpanded;
-  document.getElementById('music-player').classList.toggle('collapsed',!playerExpanded);
-  document.querySelector('.player-toggle').textContent=playerExpanded?'✕':'♪';
-}
-// auto expand after loader
+function togglePlayer(){playerExpanded=!playerExpanded;document.getElementById('music-player').classList.toggle('collapsed',!playerExpanded);document.querySelector('.player-toggle').textContent=playerExpanded?'✕':'♪'}
 setTimeout(()=>{playerExpanded=true;document.getElementById('music-player').classList.remove('collapsed');document.querySelector('.player-toggle').textContent='✕'},2500);
 
-/* AI CHATBOT — Smart Local (no API, works on GitHub Pages) */
+/* AI CHATBOT */
 let chatOpen=false;
 function toggleChat(){chatOpen=!chatOpen;document.getElementById('chatbot-window').classList.toggle('open',chatOpen);document.getElementById('chatbot-btn').textContent=chatOpen?'✕':'🤖'}
 function quickAsk(q){document.getElementById('chat-input').value=q;sendChat()}
-
 const smartReplies=[
   {keys:['skill','know','tech','language','code'],reply:`Sahil knows: 🔧 HTML (80%), 🎨 CSS (70%), 🐍 Python (75%), ⚙️ C (65%), 🗄️ SQL (60%), and 🤖 AI/ML basics (45%). Python is his strongest passion! 💪`},
   {keys:['certificate','cert','cisco','anthropic','ibm'],reply:`Sahil has 8 certificates! 🏆 Cisco Python Essentials 1 & 2, Anthropic AI Fluency (4 certs), IBM SkillsBuild Career Management, and GreatLearning SQL. Very impressive for a 1st year student! 🌟`},
@@ -1053,15 +1120,7 @@ const smartReplies=[
   {keys:['interest','hobby','like','love','game','gaming'],reply:`Sahil is passionate about Python 🐍, Web Development 🌐, AI & Machine Learning 🤖, and Problem Solving. He's also a proud part-time gamer! 🎮`},
   {keys:['hello','hi','hey','namaste','hola'],reply:`Hey there! 👋 I'm Sahil's AI assistant. Ask me anything about his skills, projects, certificates, or education! 😊`},
 ];
-
-function getSmartReply(msg){
-  const lower=msg.toLowerCase();
-  for(const sr of smartReplies){
-    if(sr.keys.some(k=>lower.includes(k)))return sr.reply;
-  }
-  return `🤔 Hmm, I'm not sure about that! Try asking me about Sahil's skills, projects, certificates, or education. I know everything about him! 😄`;
-}
-
+function getSmartReply(msg){const lower=msg.toLowerCase();for(const sr of smartReplies){if(sr.keys.some(k=>lower.includes(k)))return sr.reply}return`🤔 Hmm, I'm not sure about that! Try asking me about Sahil's skills, projects, certificates, or education. I know everything about him! 😄`}
 async function sendChat(){
   const input=document.getElementById('chat-input');
   const msg=input.value.trim();if(!msg)return;
@@ -1070,11 +1129,7 @@ async function sendChat(){
   const uDiv=document.createElement('div');uDiv.className='msg user';uDiv.textContent=msg;msgs.appendChild(uDiv);
   const lDiv=document.createElement('div');lDiv.className='msg loading';lDiv.textContent='💭 Thinking...';msgs.appendChild(lDiv);
   msgs.scrollTop=msgs.scrollHeight;
-  // Simulate typing delay then show smart reply
-  setTimeout(()=>{
-    lDiv.className='msg bot';lDiv.textContent=getSmartReply(msg);
-    msgs.scrollTop=msgs.scrollHeight;
-  },700);
+  setTimeout(()=>{lDiv.className='msg bot';lDiv.textContent=getSmartReply(msg);msgs.scrollTop=msgs.scrollHeight},700);
 }
 </script>
 </body>
